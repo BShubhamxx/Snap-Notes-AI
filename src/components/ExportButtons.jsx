@@ -5,36 +5,30 @@ import {
     DocumentArrowDownIcon,
     CheckIcon,
 } from '@heroicons/react/24/outline'
+import { copyToClipboard, downloadTXT, downloadPDF, formatTextForExport } from '../utils/exportNotes'
 
-function ExportButtons({ notes, disabled = false }) {
+function ExportButtons({ notes, format = 'bullet', disabled = false }) {
     const [copied, setCopied] = useState(false)
 
     const handleCopy = async () => {
-        try {
-            await navigator.clipboard.writeText(notes)
+        const formattedText = formatTextForExport(notes, format)
+        const success = await copyToClipboard(formattedText)
+
+        if (success) {
             setCopied(true)
             setTimeout(() => setCopied(false), 2000)
-        } catch (error) {
-            console.error('Failed to copy:', error)
+        } else {
             alert('Failed to copy to clipboard')
         }
     }
 
     const handleDownloadTXT = () => {
-        const blob = new Blob([notes], { type: 'text/plain' })
-        const url = URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = `snapnotes-${Date.now()}.txt`
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        URL.revokeObjectURL(url)
+        const formattedText = formatTextForExport(notes, format)
+        downloadTXT(formattedText)
     }
 
     const handleDownloadPDF = () => {
-        // Placeholder for PDF export - will implement with jsPDF later
-        alert('PDF export coming soon! For now, use Copy or TXT download.')
+        downloadPDF(notes, format)
     }
 
     return (

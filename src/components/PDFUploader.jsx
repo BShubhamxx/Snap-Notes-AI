@@ -1,10 +1,13 @@
 import { useState, useRef } from 'react'
 import { DocumentPlusIcon, XMarkIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
+import { extractTextFromPDF } from '../utils/pdfParser'
 
-function PDFUploader({ onFileSelect, onFileRemove }) {
+function PDFUploader({ onFileSelect, onFileRemove, onTextExtracted }) {
     const [file, setFile] = useState(null)
     const [isDragging, setIsDragging] = useState(false)
     const [error, setError] = useState(null)
+    const [isExtracting, setIsExtracting] = useState(false)
+    const [extractionProgress, setExtractionProgress] = useState(0)
     const fileInputRef = useRef(null)
 
     const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB in bytes
@@ -26,10 +29,28 @@ function PDFUploader({ onFileSelect, onFileRemove }) {
         return true
     }
 
-    const handleFileSelect = (selectedFile) => {
+    const handleFileSelect = async (selectedFile) => {
         if (validateFile(selectedFile)) {
             setFile(selectedFile)
-            onFileSelect(selectedFile)
+            setIsExtracting(true)
+            setExtractionProgress(0)
+
+            try {
+                // Extract text from PDF
+                const text = await extractTextFromPDF(selectedFile, (page, total) => {
+                    setExtractionProgress(Math.round((page / total) * 100))
+                })
+
+                onFileSelect(selectedFile)
+                if (onTextExtracted) {
+                    onTextExtracted(text)
+                }
+                setIsExtracting(false)
+            } catch (err) {
+                setError(err.message || 'Failed to extract text from PDF')
+                setFile(null)
+                setIsExtracting(false)
+            }
         }
     }
 
@@ -94,8 +115,10 @@ function PDFUploader({ onFileSelect, onFileRemove }) {
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
-                    onClick={handleClick}
-                    className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer ${
+                    onClick={!isExtracting ? handleClick : undefined}
+                    className={`border-2 border-dashed rounded-xl p-8 text-center transition-all ${
+                        isExtracting ? 'cursor-wait' : 'cursor-pointer'
+                    } ${
                         isDragging
                             ? 'border-primary-500 bg-primary-100'
                             : error
@@ -103,12 +126,22 @@ function PDFUploader({ onFileSelect, onFileRemove }) {
                             : 'border-neutral-300 hover:border-primary-400 hover:bg-primary-50/50'
                     }`}
                 >
-                    <DocumentPlusIcon className={`w-12 h-12 mx-auto mb-2 ${error ? 'text-red-400' : 'text-neutral-400'}`} />
-                    <p className="text-sm font-medium text-neutral-700 mb-1">
-                        {isDragging ? 'Drop PDF here' : 'Drop PDF here or click to upload'}
-                    </p>
-                    <p className="text-xs text-neutral-500">Max 10MB • PDF only</p>
-                    {error && <p className="text-xs text-red-500 mt-2">{error}</p>}
+                    {isExtracting ? (
+                        <>
+                            <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent mx-auto mb-3"></div>
+                            <p className="text-sm font-medium text-neutral-700 mb-1">Extracting text from PDF...</p>
+                            <p className="text-xs text-neutral-500">{extractionProgress}% complete</p>
+                        </>
+                    ) : (
+                        <>
+                            <DocumentPlusIcon className={`w-12 h-12 mx-auto mb-2 ${error ? 'text-red-400' : 'text-neutral-400'}`} />
+                            <p className="text-sm font-medium text-neutral-700 mb-1">
+                                {isDragging ? 'Drop PDF here' : 'Drop PDF here or click to upload'}
+                            </p>
+                            <p className="text-xs text-neutral-500">Max 10MB • PDF only</p>
+                            {error && <p className="text-xs text-red-500 mt-2">{error}</p>}
+                        </>
+                    )}
                 </div>
             ) : (
                 <div className="border-2 border-primary-300 bg-primary-50 rounded-xl p-4">

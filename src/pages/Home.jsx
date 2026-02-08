@@ -52,11 +52,15 @@ function Home() {
 
     const handleFileSelect = (file) => {
         setPdfFile(file)
-        // TODO: Extract text from PDF
     }
 
     const handleFileRemove = () => {
         setPdfFile(null)
+        setInputText('') // Clear input text when PDF is removed
+    }
+
+    const handleTextExtracted = (text) => {
+        setInputText(text) // Populate input with extracted PDF text
     }
 
     return (
@@ -131,7 +135,11 @@ function Home() {
                             <TextInput value={inputText} onChange={setInputText} />
 
                             {/* PDF Uploader Component */}
-                            <PDFUploader onFileSelect={handleFileSelect} onFileRemove={handleFileRemove} />
+                            <PDFUploader 
+                                onFileSelect={handleFileSelect} 
+                                onFileRemove={handleFileRemove}
+                                onTextExtracted={handleTextExtracted}
+                            />
 
                             {/* Format Selector Component */}
                             <FormatSelector selectedFormat={selectedFormat} onFormatChange={setSelectedFormat} />
