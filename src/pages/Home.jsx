@@ -2,25 +2,63 @@ import { useState } from 'react'
 import {
     SparklesIcon,
     DocumentTextIcon,
-    PencilSquareIcon,
-    ArrowDownTrayIcon,
-    ClipboardDocumentIcon,
-    DocumentArrowDownIcon,
-    ScissorsIcon,
-    BookOpenIcon,
-    QuestionMarkCircleIcon,
-    RectangleStackIcon,
-    CheckCircleIcon,
     BoltIcon,
     AcademicCapIcon,
-    DocumentPlusIcon,
 } from '@heroicons/react/24/outline'
 import {
     SparklesIcon as SparklesSolid,
     BoltIcon as BoltSolid,
 } from '@heroicons/react/24/solid'
 
+// Components
+import TextInput from '../components/TextInput'
+import PDFUploader from '../components/PDFUploader'
+import FormatSelector from '../components/FormatSelector'
+import NotesOutput from '../components/NotesOutput'
+import ActionButtons from '../components/ActionButtons'
+import ExportButtons from '../components/ExportButtons'
+
 function Home() {
+    const [inputText, setInputText] = useState('')
+    const [pdfFile, setPdfFile] = useState(null)
+    const [selectedFormat, setSelectedFormat] = useState('bullet')
+    const [generatedNotes, setGeneratedNotes] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const handleGenerate = async () => {
+        if (!inputText && !pdfFile) {
+            alert('Please enter text or upload a PDF')
+            return
+        }
+
+        setIsLoading(true)
+        // Placeholder for Tambo AI integration
+        setTimeout(() => {
+            setGeneratedNotes('Sample generated notes will appear here...')
+            setIsLoading(false)
+        }, 2000)
+    }
+
+    const handleAction = async (actionType) => {
+        if (!generatedNotes) return
+
+        setIsLoading(true)
+        // Placeholder for refinement actions
+        setTimeout(() => {
+            setGeneratedNotes(`[${actionType}] ${generatedNotes}`)
+            setIsLoading(false)
+        }, 1500)
+    }
+
+    const handleFileSelect = (file) => {
+        setPdfFile(file)
+        // TODO: Extract text from PDF
+    }
+
+    const handleFileRemove = () => {
+        setPdfFile(null)
+    }
+
     return (
         <div className="min-h-screen">
             {/* Animated Background Gradient */}
@@ -53,15 +91,15 @@ function Home() {
                         {/* Feature Pills */}
                         <div className="flex flex-wrap gap-3 justify-center">
                             <span className="badge">
-                                <PencilSquareIcon className="w-4 h-4 mr-1" />
+                                <DocumentTextIcon className="w-4 h-4 mr-1" />
                                 Bullet Notes
                             </span>
                             <span className="badge">
-                                <QuestionMarkCircleIcon className="w-4 h-4 mr-1" />
+                                <SparklesIcon className="w-4 h-4 mr-1" />
                                 Q&A Format
                             </span>
                             <span className="badge">
-                                <RectangleStackIcon className="w-4 h-4 mr-1" />
+                                <AcademicCapIcon className="w-4 h-4 mr-1" />
                                 Flashcards
                             </span>
                             <span className="badge">
@@ -89,74 +127,23 @@ function Home() {
                         </div>
 
                         <div className="space-y-4">
-                            {/* Placeholder for TextInput */}
-                            <div className="relative">
-                                <textarea
-                                    className="input-field min-h-[300px] resize-none"
-                                    placeholder="Paste your text here or upload a PDF below...
+                            {/* Text Input Component */}
+                            <TextInput value={inputText} onChange={setInputText} />
 
-Example: Copy lecture notes, articles, or study materials
-Max 50,000 characters
-Focus on exam-relevant content"
-                                    disabled
-                                />
-                                <div className="absolute bottom-4 right-4 text-xs text-neutral-400">
-                                    0 / 50,000
-                                </div>
-                            </div>
+                            {/* PDF Uploader Component */}
+                            <PDFUploader onFileSelect={handleFileSelect} onFileRemove={handleFileRemove} />
 
-                            {/* Helper Text with Icons */}
-                            <div className="space-y-2 text-sm text-neutral-500">
-                                <div className="flex items-center gap-2">
-                                    <BookOpenIcon className="w-4 h-4 text-primary-500" />
-                                    <span>Example: Copy lecture notes, articles, or study materials</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <BoltIcon className="w-4 h-4 text-amber-500" />
-                                    <span>Max 50,000 characters</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <AcademicCapIcon className="w-4 h-4 text-purple-500" />
-                                    <span>Focus on exam-relevant content</span>
-                                </div>
-                            </div>
-
-                            {/* Placeholder for PDF Upload */}
-                            <div className="border-2 border-dashed border-neutral-300 rounded-xl p-8 text-center hover:border-primary-400 hover:bg-primary-50/50 transition-all cursor-pointer">
-                                <DocumentPlusIcon className="w-12 h-12 mx-auto mb-2 text-neutral-400" />
-                                <p className="text-sm font-medium text-neutral-700 mb-1">
-                                    Drop PDF here or click to upload
-                                </p>
-                                <p className="text-xs text-neutral-500">
-                                    Max 10MB • PDF only
-                                </p>
-                            </div>
-
-                            {/* Format Selector */}
-                            <div>
-                                <label className="block text-sm font-semibold text-neutral-700 mb-3">
-                                    Choose Format
-                                </label>
-                                <div className="grid grid-cols-3 gap-3">
-                                    <button className="p-5 rounded-xl border-2 border-primary-500 bg-primary-50 text-primary-700 font-medium hover:bg-primary-100 transition-all">
-                                        <PencilSquareIcon className="w-8 h-8 mx-auto mb-2" />
-                                        <div className="text-sm font-semibold">Bullet</div>
-                                    </button>
-                                    <button className="p-5 rounded-xl border-2 border-neutral-200 bg-white text-neutral-600 font-medium hover:border-primary-300 hover:bg-primary-50 transition-all">
-                                        <QuestionMarkCircleIcon className="w-8 h-8 mx-auto mb-2" />
-                                        <div className="text-sm font-semibold">Q&A</div>
-                                    </button>
-                                    <button className="p-5 rounded-xl border-2 border-neutral-200 bg-white text-neutral-600 font-medium hover:border-primary-300 hover:bg-primary-50 transition-all">
-                                        <RectangleStackIcon className="w-8 h-8 mx-auto mb-2" />
-                                        <div className="text-sm font-semibold">Flashcards</div>
-                                    </button>
-                                </div>
-                            </div>
+                            {/* Format Selector Component */}
+                            <FormatSelector selectedFormat={selectedFormat} onFormatChange={setSelectedFormat} />
 
                             {/* Generate Button */}
-                            <button className="btn-primary w-full text-lg flex items-center justify-center gap-2">
+                            <button
+                                onClick={handleGenerate}
+                                disabled={isLoading || (!inputText && !pdfFile)}
+                                className="btn-primary w-full text-lg flex items-center justify-center gap-2"
+                            >
                                 <SparklesSolid className="w-5 h-5" />
-                                Generate Notes
+                                {isLoading ? 'Generating...' : 'Generate Notes'}
                             </button>
                         </div>
                     </div>
@@ -173,32 +160,8 @@ Focus on exam-relevant content"
                             </span>
                         </div>
 
-                        {/* Empty State */}
-                        <div className="min-h-[400px] flex flex-col items-center justify-center text-center p-8 bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-xl border border-neutral-200">
-                            <SparklesIcon className="w-16 h-16 mb-4 text-primary-400 animate-pulse-slow" />
-                            <h3 className="text-xl font-semibold text-neutral-700 mb-2">
-                                Ready to Generate Notes
-                            </h3>
-                            <p className="text-neutral-500 max-w-sm">
-                                Paste your content or upload a PDF, select a format, and click "Generate Notes" to get started!
-                            </p>
-
-                            {/* Feature List */}
-                            <div className="mt-6 space-y-2 text-left">
-                                <div className="flex items-center gap-2 text-sm text-neutral-600">
-                                    <CheckCircleIcon className="w-5 h-5 text-green-500" />
-                                    <span>AI-powered summarization</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-sm text-neutral-600">
-                                    <CheckCircleIcon className="w-5 h-5 text-green-500" />
-                                    <span>Exam-focused content</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-sm text-neutral-600">
-                                    <CheckCircleIcon className="w-5 h-5 text-green-500" />
-                                    <span>Multiple format options</span>
-                                </div>
-                            </div>
-                        </div>
+                        {/* Notes Output Component */}
+                        <NotesOutput notes={generatedNotes} format={selectedFormat} isLoading={isLoading} />
                     </div>
                 </div>
 
@@ -209,39 +172,17 @@ Focus on exam-relevant content"
                         Refine & Export
                     </h3>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-                        <button className="btn-secondary flex items-center justify-center gap-2" disabled>
-                            <ScissorsIcon className="w-4 h-4" />
-                            <span>Shorter</span>
-                        </button>
-                        <button className="btn-secondary flex items-center justify-center gap-2" disabled>
-                            <BookOpenIcon className="w-4 h-4" />
-                            <span>Detailed</span>
-                        </button>
-                        <button className="btn-secondary flex items-center justify-center gap-2" disabled>
-                            <QuestionMarkCircleIcon className="w-4 h-4" />
-                            <span>To Q&A</span>
-                        </button>
-                        <button className="btn-secondary flex items-center justify-center gap-2" disabled>
-                            <RectangleStackIcon className="w-4 h-4" />
-                            <span>Flashcards</span>
-                        </button>
+                    {/* Action Buttons Component */}
+                    <div className="mb-4">
+                        <ActionButtons
+                            onAction={handleAction}
+                            disabled={!generatedNotes || isLoading}
+                            currentFormat={selectedFormat}
+                        />
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3">
-                        <button className="btn-secondary flex items-center justify-center gap-2" disabled>
-                            <ClipboardDocumentIcon className="w-4 h-4" />
-                            <span>Copy</span>
-                        </button>
-                        <button className="btn-secondary flex items-center justify-center gap-2" disabled>
-                            <ArrowDownTrayIcon className="w-4 h-4" />
-                            <span>TXT</span>
-                        </button>
-                        <button className="btn-secondary flex items-center justify-center gap-2" disabled>
-                            <DocumentArrowDownIcon className="w-4 h-4" />
-                            <span>PDF</span>
-                        </button>
-                    </div>
+                    {/* Export Buttons Component */}
+                    <ExportButtons notes={generatedNotes || ''} disabled={!generatedNotes} />
                 </div>
             </main>
 
@@ -249,7 +190,12 @@ Focus on exam-relevant content"
             <footer className="container mx-auto px-4 py-8 text-center">
                 <p className="text-sm text-neutral-500">
                     Built with ❤️ using <span className="font-semibold text-primary-600">Tambo AI</span> •
-                    <a href="https://github.com/BShubhamxx/Snap-Notes-AI" target="_blank" rel="noopener noreferrer" className="ml-1 hover:text-primary-600 transition-colors">
+                    <a
+                        href="https://github.com/BShubhamxx/Snap-Notes-AI"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-1 hover:text-primary-600 transition-colors"
+                    >
                         View on GitHub
                     </a>
                 </p>
