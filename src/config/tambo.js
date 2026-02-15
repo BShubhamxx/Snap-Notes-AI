@@ -1,15 +1,15 @@
-// Tambo AI Configuration
-const TAMBO_API_KEY = import.meta.env.VITE_TAMBO_API_KEY;
+// Google Gemini AI Configuration
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
-if (!TAMBO_API_KEY) {
-    console.error('⚠️ VITE_TAMBO_API_KEY is not set in .env.local');
+if (!GEMINI_API_KEY) {
+    console.warn('⚠️ VITE_GEMINI_API_KEY is not set in .env.local');
 }
 
 export const tamboConfig = {
-    apiKey: TAMBO_API_KEY,
-    baseURL: 'https://api.tambo.co',
-    defaultModel: 'gpt-5.2',
-    timeout: 30000, // 30 seconds
+    apiKey: GEMINI_API_KEY,
+    baseURL: 'https://generativelanguage.googleapis.com/v1beta/models',
+    defaultModel: 'gemini-1.5-pro',
+    timeout: 30000,
 };
 
 // Note generation prompts

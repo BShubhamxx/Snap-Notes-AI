@@ -36,7 +36,7 @@ function ActionButtons({ onAction, disabled = false, currentFormat }) {
     ]
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="flex items-center gap-1">
             {actions
                 .filter((action) => !action.hidden)
                 .map((action) => {
@@ -46,11 +46,16 @@ function ActionButtons({ onAction, disabled = false, currentFormat }) {
                             key={action.id}
                             onClick={() => onAction(action.id)}
                             disabled={disabled}
-                            className="btn-secondary flex items-center justify-center gap-2"
+                            className="p-1.5 text-neutral-600 hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed group relative"
                             title={action.description}
                         >
-                            <Icon className="w-4 h-4" />
-                            <span>{action.label}</span>
+                            <Icon className="w-5 h-5" />
+                            <span className="text-xs font-medium hidden md:inline">{action.label}</span>
+                            
+                            {/* Tooltip */}
+                            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-neutral-800 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                                {action.description}
+                            </span>
                         </button>
                     )
                 })}

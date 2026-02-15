@@ -23,32 +23,27 @@ const formats = [
 
 function FormatSelector({ selectedFormat, onFormatChange }) {
     return (
-        <div>
-            <label className="block text-sm font-semibold text-neutral-700 mb-3">
-                Choose Format
-            </label>
-            <div className="grid grid-cols-3 gap-3">
-                {formats.map((format) => {
-                    const Icon = format.icon
-                    const isSelected = selectedFormat === format.id
+        <div className="flex gap-2">
+            {formats.map((format) => {
+                const Icon = format.icon
+                const isSelected = selectedFormat === format.id
 
-                    return (
-                        <button
-                            key={format.id}
-                            onClick={() => onFormatChange(format.id)}
-                            className={`p-5 rounded-xl border-2 font-medium transition-all ${
-                                isSelected
-                                    ? 'border-primary-500 bg-primary-50 text-primary-700'
-                                    : 'border-neutral-200 bg-white text-neutral-600 hover:border-primary-300 hover:bg-primary-50'
-                            }`}
-                            title={format.description}
-                        >
-                            <Icon className="w-8 h-8 mx-auto mb-2" />
-                            <div className="text-sm font-semibold">{format.name}</div>
-                        </button>
-                    )
-                })}
-            </div>
+                return (
+                    <button
+                        key={format.id}
+                        onClick={() => onFormatChange(format.id)}
+                        className={`flex-1 py-2 px-1 rounded-lg border text-center transition-all flex flex-col items-center justify-center gap-1 ${
+                            isSelected
+                                ? 'border-primary-500 bg-primary-50 text-primary-700 shadow-sm'
+                                : 'border-neutral-200 bg-white text-neutral-500 hover:border-primary-300 hover:bg-neutral-50'
+                        }`}
+                        title={format.description}
+                    >
+                        <Icon className={`w-5 h-5 ${isSelected ? 'text-primary-600' : 'text-neutral-400'}`} />
+                        <span className="text-xs font-medium">{format.name}</span>
+                    </button>
+                )
+            })}
         </div>
     )
 }

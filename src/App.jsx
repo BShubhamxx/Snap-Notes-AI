@@ -1,11 +1,15 @@
 import { useState } from 'react'
+import { TamboProvider } from '@tambo-ai/react'
+import { tamboConfig } from './config/tambo'
 import Home from './pages/Home'
 
 function App() {
     return (
-        <div className="min-h-screen bg-neutral-50">
-            <Home />
-        </div>
+        <TamboProvider config={tamboConfig}>
+            <div className="min-h-screen bg-neutral-50">
+                <Home />
+            </div>
+        </TamboProvider>
     )
 }
 

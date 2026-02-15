@@ -32,44 +32,59 @@ function ExportButtons({ notes, format = 'bullet', disabled = false }) {
     }
 
     return (
-        <div className="grid grid-cols-3 gap-3">
+        <div className="flex items-center gap-1">
             <button
                 onClick={handleCopy}
                 disabled={disabled}
-                className="btn-secondary flex items-center justify-center gap-2"
+                className="p-1.5 text-neutral-600 hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed group relative"
                 title="Copy to clipboard"
             >
                 {copied ? (
                     <>
-                        <CheckIcon className="w-4 h-4 text-green-600" />
-                        <span className="text-green-600">Copied!</span>
+                        <CheckIcon className="w-5 h-5 text-green-600" />
+                        <span className="text-xs font-medium text-green-600 hidden md:inline">Copied!</span>
                     </>
                 ) : (
                     <>
-                        <ClipboardDocumentIcon className="w-4 h-4" />
-                        <span>Copy</span>
+                        <ClipboardDocumentIcon className="w-5 h-5" />
+                        <span className="text-xs font-medium hidden md:inline">Copy</span>
                     </>
                 )}
+                
+                {/* Tooltip */}
+                <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-neutral-800 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                    Copy
+                </span>
             </button>
 
             <button
                 onClick={handleDownloadTXT}
                 disabled={disabled}
-                className="btn-secondary flex items-center justify-center gap-2"
+                className="p-1.5 text-neutral-600 hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed group relative"
                 title="Download as TXT"
             >
-                <ArrowDownTrayIcon className="w-4 h-4" />
-                <span>TXT</span>
+                <ArrowDownTrayIcon className="w-5 h-5" />
+                <span className="text-xs font-medium hidden md:inline">TXT</span>
+                
+                {/* Tooltip */}
+                <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-neutral-800 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                    TXT
+                </span>
             </button>
 
             <button
                 onClick={handleDownloadPDF}
                 disabled={disabled}
-                className="btn-secondary flex items-center justify-center gap-2"
+                className="p-1.5 text-neutral-600 hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed group relative"
                 title="Download as PDF"
             >
-                <DocumentArrowDownIcon className="w-4 h-4" />
-                <span>PDF</span>
+                <DocumentArrowDownIcon className="w-5 h-5" />
+                <span className="text-xs font-medium hidden md:inline">PDF</span>
+                
+                {/* Tooltip */}
+                <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-neutral-800 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                    PDF
+                </span>
             </button>
         </div>
     )

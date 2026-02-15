@@ -3,7 +3,7 @@ import { SparklesIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
 function NotesOutput({ notes, format, isLoading }) {
     if (isLoading) {
         return (
-            <div className="min-h-[400px] flex flex-col items-center justify-center text-center p-8 bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-xl border border-neutral-200">
+            <div className="h-full flex flex-col items-center justify-center text-center p-8">
                 <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent mb-4"></div>
                 <p className="text-neutral-600 font-medium">Generating your notes...</p>
                 <p className="text-sm text-neutral-500 mt-2">This may take a few seconds</p>
@@ -12,40 +12,14 @@ function NotesOutput({ notes, format, isLoading }) {
     }
 
     if (!notes) {
-        return (
-            <div className="min-h-[400px] flex flex-col items-center justify-center text-center p-8 bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-xl border border-neutral-200">
-                <SparklesIcon className="w-16 h-16 mb-4 text-primary-400 animate-pulse-slow" />
-                <h3 className="text-xl font-semibold text-neutral-700 mb-2">Ready to Generate Notes</h3>
-                <p className="text-neutral-500 max-w-sm">
-                    Paste your content or upload a PDF, select a format, and click "Generate Notes" to get started!
-                </p>
-
-                {/* Feature List */}
-                <div className="mt-6 space-y-2 text-left">
-                    <div className="flex items-center gap-2 text-sm text-neutral-600">
-                        <CheckCircleIcon className="w-5 h-5 text-green-500" />
-                        <span>AI-powered summarization</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-neutral-600">
-                        <CheckCircleIcon className="w-5 h-5 text-green-500" />
-                        <span>Exam-focused content</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-neutral-600">
-                        <CheckCircleIcon className="w-5 h-5 text-green-500" />
-                        <span>Multiple format options</span>
-                    </div>
-                </div>
-            </div>
-        )
+        return null // Handled by parent container
     }
 
     return (
-        <div className="min-h-[400px] p-6 bg-white rounded-xl border border-neutral-200">
-            <div className="prose prose-sm max-w-none">
-                {format === 'bullet' && <BulletNotesFormat notes={notes} />}
-                {format === 'qa' && <QAFormat notes={notes} />}
-                {format === 'flashcard' && <FlashcardFormat notes={notes} />}
-            </div>
+        <div className="prose prose-sm md:prose-base max-w-none">
+            {format === 'bullet' && <BulletNotesFormat notes={notes} />}
+            {format === 'qa' && <QAFormat notes={notes} />}
+            {format === 'flashcard' && <FlashcardFormat notes={notes} />}
         </div>
     )
 }

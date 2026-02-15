@@ -18,51 +18,28 @@ function TextInput({ value, onChange, maxLength = 50000 }) {
     }
 
     return (
-        <div className="space-y-4">
-            {/* Text Area */}
-            <div className="relative">
-                <textarea
-                    className="input-field min-h-[300px] resize-none"
-                    placeholder="Paste your text here or upload a PDF below...
-
-Example: Copy lecture notes, articles, or study materials
-Max 50,000 characters
-Focus on exam-relevant content"
-                    value={value}
-                    onChange={handleChange}
-                    maxLength={maxLength}
-                />
-                
-                {/* Character Counter */}
-                <div className="absolute bottom-4 right-4 flex items-center gap-2">
-                    {charCount > 0 && (
-                        <button
-                            onClick={handleClear}
-                            className="text-xs text-neutral-400 hover:text-red-500 transition-colors"
-                        >
-                            Clear
-                        </button>
-                    )}
-                    <span className={`text-xs ${charCount > maxLength * 0.9 ? 'text-amber-500 font-semibold' : 'text-neutral-400'}`}>
-                        {charCount.toLocaleString()} / {maxLength.toLocaleString()}
-                    </span>
-                </div>
-            </div>
-
-            {/* Helper Text with Icons */}
-            <div className="space-y-2 text-sm text-neutral-500">
-                <div className="flex items-center gap-2">
-                    <BookOpenIcon className="w-4 h-4 text-primary-500" />
-                    <span>Example: Copy lecture notes, articles, or study materials</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <BoltIcon className="w-4 h-4 text-amber-500" />
-                    <span>Max {maxLength.toLocaleString()} characters</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <AcademicCapIcon className="w-4 h-4 text-purple-500" />
-                    <span>Focus on exam-relevant content</span>
-                </div>
+        <div className="h-full flex flex-col relative">
+            <textarea
+                className="input-field flex-1 min-h-[150px] resize-none p-4 text-sm bg-neutral-50 border-neutral-200 focus:bg-white transition-colors"
+                placeholder="Paste your text here..."
+                value={value}
+                onChange={handleChange}
+                maxLength={maxLength}
+            />
+            
+            {/* Character Counter & Clear */}
+            <div className="absolute bottom-3 right-3 flex items-center gap-3 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-md border border-neutral-100">
+                {charCount > 0 && (
+                    <button
+                        onClick={handleClear}
+                        className="text-xs text-neutral-400 hover:text-red-500 transition-colors font-medium"
+                    >
+                        Clear
+                    </button>
+                )}
+                <span className={`text-xs ${charCount > maxLength * 0.9 ? 'text-amber-500 font-semibold' : 'text-neutral-400'}`}>
+                    {charCount.toLocaleString()} / {maxLength.toLocaleString()}
+                </span>
             </div>
         </div>
     )

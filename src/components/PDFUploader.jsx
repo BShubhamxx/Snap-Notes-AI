@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { DocumentPlusIcon, XMarkIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import { extractTextFromPDF } from '../utils/pdfParser'
 
-function PDFUploader({ onFileSelect, onFileRemove, onTextExtracted }) {
+function PDFUploader({ onFileSelect, onFileRemove, onTextExtracted, onExtractionStart, onExtractionEnd }) {
     const [file, setFile] = useState(null)
     const [isDragging, setIsDragging] = useState(false)
     const [error, setError] = useState(null)
@@ -33,6 +33,7 @@ function PDFUploader({ onFileSelect, onFileRemove, onTextExtracted }) {
         if (validateFile(selectedFile)) {
             setFile(selectedFile)
             setIsExtracting(true)
+            if (onExtractionStart) onExtractionStart()
             setExtractionProgress(0)
 
             try {
@@ -46,10 +47,12 @@ function PDFUploader({ onFileSelect, onFileRemove, onTextExtracted }) {
                     onTextExtracted(text)
                 }
                 setIsExtracting(false)
+                if (onExtractionEnd) onExtractionEnd()
             } catch (err) {
                 setError(err.message || 'Failed to extract text from PDF')
                 setFile(null)
                 setIsExtracting(false)
+                if (onExtractionEnd) onExtractionEnd()
             }
         }
     }
@@ -116,51 +119,54 @@ function PDFUploader({ onFileSelect, onFileRemove, onTextExtracted }) {
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                     onClick={!isExtracting ? handleClick : undefined}
-                    className={`border-2 border-dashed rounded-xl p-8 text-center transition-all ${
-                        isExtracting ? 'cursor-wait' : 'cursor-pointer'
+                    className={`border border-dashed rounded-lg p-4 text-center transition-all ${
+                        isExtracting ? 'cursor-wait bg-neutral-50' : 'cursor-pointer'
                     } ${
                         isDragging
-                            ? 'border-primary-500 bg-primary-100'
+                            ? 'border-primary-500 bg-primary-50'
                             : error
                             ? 'border-red-300 bg-red-50'
-                            : 'border-neutral-300 hover:border-primary-400 hover:bg-primary-50/50'
+                            : 'border-neutral-200 hover:border-primary-400 hover:bg-neutral-50'
                     }`}
                 >
                     {isExtracting ? (
-                        <>
-                            <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent mx-auto mb-3"></div>
-                            <p className="text-sm font-medium text-neutral-700 mb-1">Extracting text from PDF...</p>
-                            <p className="text-xs text-neutral-500">{extractionProgress}% complete</p>
-                        </>
+                        <div className="flex items-center justify-center gap-3">
+                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary-500 border-t-transparent"></div>
+                            <span className="text-xs font-medium text-neutral-600">Extracting... {extractionProgress}%</span>
+                        </div>
                     ) : (
-                        <>
-                            <DocumentPlusIcon className={`w-12 h-12 mx-auto mb-2 ${error ? 'text-red-400' : 'text-neutral-400'}`} />
-                            <p className="text-sm font-medium text-neutral-700 mb-1">
-                                {isDragging ? 'Drop PDF here' : 'Drop PDF here or click to upload'}
-                            </p>
-                            <p className="text-xs text-neutral-500">Max 10MB • PDF only</p>
-                            {error && <p className="text-xs text-red-500 mt-2">{error}</p>}
-                        </>
+                        <div className="flex flex-col items-center gap-2">
+                            <div className={`p-2 rounded-full ${isDragging ? 'bg-primary-100 text-primary-600' : 'bg-neutral-100 text-neutral-400'}`}>
+                                <DocumentPlusIcon className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <p className="text-xs font-medium text-neutral-600">
+                                    {isDragging ? 'Drop PDF' : 'Upload PDF'}
+                                </p>
+                                <p className="text-[10px] text-neutral-400 mt-0.5">Max 10MB</p>
+                            </div>
+                            {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+                        </div>
                     )}
                 </div>
             ) : (
-                <div className="border-2 border-primary-300 bg-primary-50 rounded-xl p-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <DocumentTextIcon className="w-8 h-8 text-primary-600" />
-                            <div>
-                                <p className="text-sm font-medium text-neutral-800">{file.name}</p>
-                                <p className="text-xs text-neutral-500">{formatFileSize(file.size)}</p>
-                            </div>
+                <div className="border border-primary-200 bg-primary-50/50 rounded-lg p-3 flex items-center justify-between group">
+                    <div className="flex items-center gap-3 min-w-0">
+                        <div className="p-2 bg-white rounded-md shadow-sm text-primary-600">
+                            <DocumentTextIcon className="w-5 h-5" />
                         </div>
-                        <button
-                            onClick={handleRemove}
-                            className="p-2 hover:bg-red-100 rounded-lg transition-colors group"
-                            title="Remove file"
-                        >
-                            <XMarkIcon className="w-5 h-5 text-neutral-500 group-hover:text-red-600" />
-                        </button>
+                        <div className="min-w-0">
+                            <p className="text-xs font-medium text-neutral-800 truncate">{file.name}</p>
+                            <p className="text-[10px] text-neutral-500">{formatFileSize(file.size)}</p>
+                        </div>
                     </div>
+                    <button
+                        onClick={handleRemove}
+                        className="p-1.5 hover:bg-red-100 text-neutral-400 hover:text-red-500 rounded-md transition-colors"
+                        title="Remove file"
+                    >
+                        <XMarkIcon className="w-4 h-4" />
+                    </button>
                 </div>
             )}
         </div>
