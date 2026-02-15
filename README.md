@@ -1,4 +1,4 @@
-# SnapNotes AI 📝✨
+# SnapNotes AI 📝
 
 > Transform lengthy academic content into exam-ready micro-notes with AI-powered intelligence
 
@@ -7,28 +7,27 @@
 [![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini-orange.svg)](https://ai.google.dev/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-## 🎯 Overview
+## Overview
 
 **SnapNotes AI** is an intelligent web application that helps students convert lengthy PDFs, articles, and notes into concise, exam-oriented micro-notes. Powered by Google Gemini AI, it generates notes in multiple formats—bullet points, Q&A, and flashcards—making exam preparation faster and more effective.
 
-### ✨ Key Features
+### Key Features
 
 - **📄 Multi-Input Support**: Paste text directly or upload PDF files (up to 10MB)
-- **🤖 AI-Powered Generation**: Leverages Google Gemini for intelligent summarization
-- **🎨 Multiple Formats**: 
-  - 📋 Bullet Notes for quick scanning
-  - ❓ Q&A format for self-testing
-  - 🎴 Flashcards for memorization
+- ** AI-Powered Generation**: Leverages Google Gemini for intelligent summarization
+- ** Multiple Formats**: 
+  -  Bullet Notes for quick scanning
+  -  Q&A format for self-testing
+  -  Flashcards for memorization
 - **⚡ Interactive Refinement**: 
   - Make notes shorter or more detailed
   - Convert between formats instantly
-- **💾 Export Options**: Copy to clipboard, download as TXT or PDF
-- **🎯 Exam-Focused**: Highlights key concepts, definitions, and important terms
-- **🚀 No Account Required**: Start using immediately
+- ** Export Options**: Copy to clipboard, download as TXT or PDF
+- ** Exam-Focused**: Highlights key concepts, definitions, and important terms
+- ** No Account Required**: Start using immediately
 
-## 🖼️ Screenshots
-
-![SnapNotes AI Dashboard](https://via.placeholder.com/800x450?text=SnapNotes+AI+Dashboard)
+##  Screenshots
+<img width="1920" height="1080" alt="Screenshot From 2026-02-15 21-59-27" src="https://github.com/user-attachments/assets/8d24b0ea-4fbc-49ad-8f00-4a33feb8a586" />
 
 ## 🚀 Quick Start
 
@@ -125,7 +124,7 @@ snapnotes-ai/
 │   ├── pages/
 │   │   └── Home.jsx         # Main application page
 │   ├── hooks/
-│   │   ├── useTamboAI.js    # AI integration logic
+│   │   ├── GoogleAPI.js    # AI integration logic
 │   │   └── useLocalStorage.js
 │   ├── utils/
 │   │   ├── pdfParser.js     # PDF text extraction
@@ -173,7 +172,7 @@ SnapNotes AI uses Google Gemini's advanced language model to:
 The application uses Google Gemini 1.5 Pro by default. You can modify the model in `src/config/tambo.js`:
 
 ```javascript
-export const tamboConfig = {
+export const geminiConfig = {
     apiKey: GEMINI_API_KEY,
     baseURL: 'https://generativelanguage.googleapis.com/v1beta/models',
     defaultModel: 'gemini-1.5-pro',
@@ -224,15 +223,6 @@ netlify deploy --prod
 - Gemini API requires valid API key (get one free at [Google AI Studio](https://aistudio.google.com/apikey))
 - PDF extraction may fail for image-based or encrypted PDFs
 - Large PDFs (>10MB) are not supported
-
-## 🗺️ Roadmap
-
-- [ ] User accounts and note history
-- [ ] Multi-language support
-- [ ] Subject-specific templates
-- [ ] AI-powered practice quizzes
-- [ ] Mobile app (React Native)
-- [ ] Browser extension
 
 ---
 
