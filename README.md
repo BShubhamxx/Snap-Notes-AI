@@ -13,18 +13,18 @@
 
 ### Key Features
 
-- **📄 Multi-Input Support**: Paste text directly or upload PDF files (up to 10MB)
-- ** AI-Powered Generation**: Leverages Google Gemini for intelligent summarization
-- ** Multiple Formats**: 
-  -  Bullet Notes for quick scanning
-  -  Q&A format for self-testing
-  -  Flashcards for memorization
-- **⚡ Interactive Refinement**: 
+- **📄Multi-Input Support**: Paste text directly or upload PDF files (up to 10MB)
+- **AI-Powered Generation**: Powered by Tambo AI for intelligent, structured summarization
+- **Multiple Output Formats**:
+  - Bullet Notes for quick scanning
+  - Q&A format for self-testing
+  - Flashcards for memorization
+- **⚡Interactive Refinement**:
   - Make notes shorter or more detailed
   - Convert between formats instantly
-- ** Export Options**: Copy to clipboard, download as TXT or PDF
-- ** Exam-Focused**: Highlights key concepts, definitions, and important terms
-- ** No Account Required**: Start using immediately
+- **Export Options**: Copy to clipboard or download as TXT or PDF
+- **Exam-Focused Output**: Highlights key concepts, definitions, and important terms
+- **No Account Required**: Start using immediately
 
 ##  Screenshots
 <img width="1920" height="1080" alt="Screenshot From 2026-02-15 21-59-27" src="https://github.com/user-attachments/assets/8d24b0ea-4fbc-49ad-8f00-4a33feb8a586" />
